@@ -5,25 +5,34 @@ from flask_sqlalchemy import SQLAlchemy
 
 import config
 
-db = SQLAlchemy()
-migrate = Migrate()
+db=SQLAlchemy()
+migrate=Migrate()
 
 
-# 애플리케이션 팩토리
+
+#애플리케이션 팩토리
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
 
-    # ORM
+
+    #ORM
+
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app,db)
     from . import models
+
 
     print(f"__name__:{__name__}")
 
     # Blueprint등록
-    from .views import main_views
-    app.register_blueprint(main_views.bp)
 
+    #Blueprint등록
+    from .views import main_views,question_views,answer_views
+
+    app.register_blueprint(main_views.bp)#main
+    app.register_blueprint(question_views.bp)#Question
+    app.register_blueprint(answer_views.bp)#Answer
     return app
 
